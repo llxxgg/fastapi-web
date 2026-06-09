@@ -1,20 +1,12 @@
-import threading
+import uvicorn
+from fastapi import FastAPI
 
-n = 0
+app = FastAPI()
 
-def foo():
-    global n
-    n += 1
+@app.get("/")
+async def root():
+    return {"message": "你好"}
 
-threads = []
-for i in range(50):
-    t = threading.Thread(target=foo)
-    threads.append(t)
 
-for t in threads:
-    t.start()
-
-for t in threads:
-    t.join()
-
-print(n)
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
